@@ -1,3 +1,4 @@
+version: '3'
 services:
   orders:
     build: 
@@ -8,8 +9,8 @@ services:
     env_file:
       - ./apps/orders/.env
     depends_on:
-      - database
       - rabbitmq
+      - database
       - billing
     ports:
       - "3000:3000"
@@ -26,8 +27,8 @@ services:
     env_file:
       - ./apps/billing/.env
     depends_on:
-      - database
       - rabbitmq
+      - database
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
@@ -44,7 +45,10 @@ services:
     ports:
       - "27017:27017"
     volumes:
-      - /data/docker-mongodb:/data/mongodb
+      - rmq-mongo:/data/db
     environment:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=password123
+
+volumes:
+  rmq-mongo:
